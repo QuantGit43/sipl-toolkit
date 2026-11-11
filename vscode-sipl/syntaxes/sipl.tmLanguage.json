@@ -1,0 +1,34 @@
+{
+  "$schema": "https://raw.githubusercontent.com/martinring/tmlanguage/master/tmlanguage.json",
+  "name": "SIPL",
+  "scopeName": "source.sipl",
+  "patterns": [
+    { "include": "#comment" },
+    { "include": "#keyword" },
+    { "include": "#operator" },
+    { "include": "#number" },
+    { "include": "#variable" }
+  ],
+  "repository": {
+    "comment": { "name": "comment.line.double-slash.sipl", "match": "//.*$" },
+    "keyword": {
+      "patterns": [
+        { "name": "keyword.control.block.sipl", "match": "\\b(begin|end)\\b" },
+        { "name": "keyword.control.conditional.sipl", "match": "\\b(if|then|else)\\b" },
+        { "name": "keyword.control.loop.sipl", "match": "\\b(while|do)\\b" },
+        { "name": "keyword.other.skip.sipl", "match": "\\bskip\\b" },
+        { "name": "keyword.operator.logical.sipl", "match": "\\b(or|not)\\b|∨|¬" }
+      ]
+    },
+    "operator": {
+      "patterns": [
+        { "name": "keyword.operator.assignment.sipl", "match": ":=" },
+        { "name": "keyword.operator.comparison.sipl", "match": "[=>]" },
+        { "name": "keyword.operator.arithmetic.sipl", "match": "[+*-]" },
+        { "name": "punctuation.terminator.statement.sipl", "match": ";" }
+      ]
+    },
+    "number": { "name": "constant.numeric.integer.sipl", "match": "(?<![A-Za-z_0-9])\\d+\\b" },
+    "variable": { "name": "variable.other.sipl", "match": "\\b[A-Za-z_][A-Za-z0-9_]*\\b" }
+  }
+}

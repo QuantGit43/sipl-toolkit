@@ -1,0 +1,46 @@
+[build-system]
+requires = ["hatchling>=1.21"]
+build-backend = "hatchling.build"
+
+[project]
+name = "sipl-toolkit"
+version = "0.1.0"
+description = "SIPL Language Toolkit: парсер, інтерпретатор, дерево виводу та семантичні терми для мови SIPL (курс «Теорія програмування»)"
+readme = "README.md"
+requires-python = ">=3.10"
+license = "MIT"
+authors = [{ name = "Саплюков Юрій" }]
+keywords = ["sipl", "interpreter", "semantics", "parser", "education"]
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "Topic :: Education",
+    "Topic :: Software Development :: Interpreters",
+]
+dependencies = ["lark>=1.1.9"]
+
+[project.optional-dependencies]
+dev = ["pytest>=8", "ruff>=0.5", "build>=1.2"]
+
+[project.scripts]
+sipl = "sipl.cli:main"
+
+[project.urls]
+Repository = "https://github.com/QuantGit43/sipl-toolkit"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/sipl"]
+
+[tool.hatch.build.targets.sdist]
+include = ["src", "tests", "examples", "grammar", "docs", "README.md", "CHANGELOG.md", "LICENSE"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["src", "tests"]
+
+[tool.ruff]
+line-length = 120
+target-version = "py310"
+
+[tool.ruff.lint]
+select = ["E", "F", "W", "I", "B", "UP"]
+ignore = ["E501"]

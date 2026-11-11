@@ -1,0 +1,66 @@
+name: Release
+
+on:
+  push:
+    tags: ["v*"]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: pip install -e ".[dev]" && pytest -q && python -m build
+      - name: Check tag matches package version
+        run: |
+          V=$(python -c "import sipl; print(sipl.__version__)")
+          test "v$V" = "${GITHUB_REF_NAME}"
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - name: Package VS Code extension
+        working-directory: vscode-sipl
+        run: npm ci && npm test && npx vsce package
+      - uses: actions/upload-artifact@v4
+        with:
+          name: dist
+          path: |
+            dist/*
+            vscode-sipl/*.vsix
+
+  github-release:
+    needs: build
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/download-artifact@v4
+        with:
+          name: dist
+      - name: Extract release notes from CHANGELOG
+        run: |
+          V="${GITHUB_REF_NAME#v}"
+          awk -v v="$V" '/^## \[/{p = index($0, "[" v "]") > 0; next} p' CHANGELOG.md > notes.md
+      - uses: softprops/action-gh-release@v2
+        with:
+          body_path: notes.md
+          files: |
+            dist/*
+            vscode-sipl/*.vsix
+
+  pypi:
+    needs: build
+    runs-on: ubuntu-latest
+    environment: pypi
+    permissions:
+      id-token: write
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          name: dist
+      - uses: pypa/gh-action-pypi-publish@release/v1
+        with:
+          packages-dir: dist/

@@ -1,0 +1,56 @@
+{
+  "name": "sipl-language",
+  "displayName": "SIPL Language",
+  "description": "Підсвітка синтаксису SIPL (курс «Теорія програмування»): ключові слова, змінні, числа, оператори, коментарі, сніпети.",
+  "version": "0.1.0",
+  "publisher": "quantgit43",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/QuantGit43/sipl-toolkit"
+  },
+  "engines": {
+    "vscode": "^1.80.0"
+  },
+  "categories": [
+    "Programming Languages",
+    "Snippets"
+  ],
+  "contributes": {
+    "languages": [
+      {
+        "id": "sipl",
+        "aliases": [
+          "SIPL",
+          "sipl"
+        ],
+        "extensions": [
+          ".sipl"
+        ],
+        "configuration": "./language-configuration.json"
+      }
+    ],
+    "grammars": [
+      {
+        "language": "sipl",
+        "scopeName": "source.sipl",
+        "path": "./syntaxes/sipl.tmLanguage.json"
+      }
+    ],
+    "snippets": [
+      {
+        "language": "sipl",
+        "path": "./snippets/sipl.json"
+      }
+    ]
+  },
+  "scripts": {
+    "test": "node test/highlight.test.js",
+    "package": "vsce package"
+  },
+  "devDependencies": {
+    "@vscode/vsce": "^3.0.0",
+    "vscode-oniguruma": "^2.0.1",
+    "vscode-textmate": "^9.1.0"
+  }
+}

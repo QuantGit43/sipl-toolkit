@@ -1,0 +1,27 @@
+{
+  "Program": {
+    "prefix": "program",
+    "body": ["begin", "\t$0", "end"],
+    "description": "SIPL-програма"
+  },
+  "While loop": {
+    "prefix": "while",
+    "body": ["while ${1:X} > ${2:0} do", "begin", "\t$0", "end"],
+    "description": "Цикл while ... do begin ... end"
+  },
+  "If-then-else": {
+    "prefix": "if",
+    "body": ["if ${1:X} > ${2:Y} then ${3:skip} else ${4:skip}"],
+    "description": "Розгалуження (else обов'язковий)"
+  },
+  "Block": {
+    "prefix": "begin",
+    "body": ["begin", "\t$0", "end"],
+    "description": "Блок begin ... end"
+  },
+  "Assignment": {
+    "prefix": "assign",
+    "body": ["${1:X} := ${2:0}"],
+    "description": "Присвоювання"
+  }
+}

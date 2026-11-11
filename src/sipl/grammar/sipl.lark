@@ -1,0 +1,43 @@
+start: "begin" stm "end"                          // NP1
+
+?stm: simple
+    | simple ";" stm                   -> seq      // NS2
+
+?simple: VAR ":=" aexp                 -> assign   // NS1
+       | "if" bexp "then" simple "else" simple -> if_   // NS3
+       | "while" bexp "do" simple      -> while_   // NS4
+       | "begin" stm "end"             -> block    // NS5
+       | "skip"                        -> skip     // NS6
+
+?aexp: aterm
+     | aexp "+" aterm                  -> add      // NA3
+     | aexp "-" aterm                  -> sub      // NA4
+
+?aterm: afactor
+      | aterm "*" afactor              -> mul      // NA5
+
+?afactor: NUM                          -> num      // NA1
+        | VAR                          -> var      // NA2
+        | "(" aexp ")"                 -> apar     // NA6
+
+?bexp: bterm
+     | bexp OR bterm                   -> or_      // NB3
+
+?bterm: batom
+      | NOT bterm                      -> not_     // NB4
+
+?batom: aexp "=" aexp                  -> eq       // NB1
+      | aexp ">" aexp                  -> gr       // NB2
+      | "(" bexp ")"                   -> bpar     // NB5
+
+OR: "∨" | "or"
+NOT: "¬" | "not"
+
+VAR: /(?!(begin|end|if|then|else|while|do|skip|or|not)\b)[A-Za-z_][A-Za-z0-9_]*/
+NUM: /-?[0-9]+/
+
+COMMENT: /\/\/[^\n]*/
+
+%import common.WS
+%ignore WS
+%ignore COMMENT
